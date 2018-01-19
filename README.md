@@ -38,3 +38,16 @@ Accuracy: 0.84 (+/- 0.07) [Multi-Layer Perceptron]
 Accuracy: 0.89 (+/- 0.05) [Voting Ensemble]
 ```
 
+## Can we predict HP?
+
+Another thing we can attempt with this data set is to predict HP given values for Weakness total, Retreat Cost, Total of all Attack Energy Costs. Even though HP are in increments of 10, we will consider them as continuous, when building a regression model in ```analysis/predict_hp.py```.
+
+Using R squared and MSE, we can evaluate a few different models:
+
+```
+R squared: 0.86, MSE: 86.22, [Linear Regression]
+R squared: 0.86, MSE: 88.13, [Gradient Boosting Regressor]
+R squared: 0.86, MSE: 87.59, [Support Vector Regression]
+```
+
+These are very close, with Linear Regression giving the best model.
