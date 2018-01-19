@@ -12,8 +12,10 @@ My son loves Pokémon TCG (trading card game) a lot. At first, it was just about
 
 A Pokémon subtype falls into one of:
 
-```['BREAK' 'Basic' 'EX' 'GX' 'LEGEND' 'Level Up' 'MEGA' 'Restored' 'Stage 1'
- 'Stage 2']```
+```
+['BREAK' 'Basic' 'EX' 'GX' 'LEGEND' 'Level Up' 'MEGA' 'Restored' 'Stage 1'
+ 'Stage 2']
+```
  
 As a warmup exercise to our goal of creating the best deck, here is a question: Given some features of a Pokémon card, can we predict it's subtype?
 
