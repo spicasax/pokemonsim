@@ -120,6 +120,8 @@ class PokemonCard(Card):
 
     def get_all_attacks(self):
         pokemon_data = self.get_data()
-        attacks = pokemon_data['attacks']
+        attacks = []
+        if 'attacks' in pokemon_data:
+            attacks = pokemon_data['attacks']
         return attacks
 
