@@ -16,8 +16,8 @@ def normalize_damage(damage):
 def pick_two_random_pokemon():
     card_ids = []
     for card in db.cards.aggregate([
+        {'$match': {"supertype": "Pokémon"}},
         {'$sample': {'size': 2}},
-        {'$match': {"supertype": "Pokémon"}}
     ]):
         print('Id, Name, Set: {0}, {1}, {2}'.format(card['id'], card['name'], card['set']))
         card_ids.append(card['id'])
