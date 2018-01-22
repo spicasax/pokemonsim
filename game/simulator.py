@@ -96,7 +96,7 @@ class OneOnOneBattleSimulator():
         logging.debug('******************** GAME OVER *******************')
         return winner
 
-    def multi_battle(self, num_battles):
+    def multi_one_on_on_battle(self, num_battles):
         winners = []
         for i in range(0, num_battles):
             winner = self.battle()
@@ -120,16 +120,27 @@ class OneOnOneBattleSimulator():
 
 
 def main():
-    card_ids = pick_two_random_pokemon()
+    import argparse
+    parser = argparse.ArgumentParser(description='Pokemon Battle Simulator')
+    parser.add_argument('-n', action="store", dest="num_battles", type=int, default=100, required=False)
+    parser.add_argument('-c1', action="store", dest="card1_id", type=str, required=False)
+    parser.add_argument('-c2', action="store", dest="card2_id", type=str, required=False)
+    cmd_args = parser.parse_args()
+
+    if (not cmd_args.card1_id) | (not cmd_args.card2_id):
+        print('We are not given two cards to battle, so, we pick two random Pokemon cards.')
+        card_ids = pick_two_random_pokemon()
+    else:
+        card_ids = [cmd_args.card1_id, cmd_args.card2_id]
 
     # run battle simulation a number of times, then see which wins more often, and what percent
     if len(card_ids) == 2:
-        num_battles = 100
+        num_battles = cmd_args.num_battles
         sim = OneOnOneBattleSimulator(card_ids[0], card_ids[1])
-        sim.multi_battle(num_battles)
+        sim.multi_one_on_on_battle(num_battles)
     else:
         # it is not as interesting to battle same card
-        print('Skip: drew same card twice.')
+        print('Skip: both cards are the same.')
 
     return
 
