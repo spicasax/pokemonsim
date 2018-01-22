@@ -54,3 +54,10 @@ R squared: 0.86, MSE: 87.59, [Support Vector Regression]
 ```
 
 These are very close, with Linear Regression giving the best model.
+
+## Can we simulate one-on-one battles?
+As a very basic way to play, kids sometimes will just battle Pokemon one on one, without worrying about energies, trainers, etc. Can we randomly pit two Pokémon cards against each other?
+
+In ```game/simulator.py```, we randomly select two Pokémon cards, simulate a battle against the two cards where attacks are chosen at random. We run 100 battles like this and calculate which Pokémon wins the most battles. 
+
+Note that this is not a realistic game scenario, but it gets our feet wet in battle simulation.
