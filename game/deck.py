@@ -118,6 +118,12 @@ class PokemonCard(Card):
             self.currentHP = 0
         return self.currentHP
 
+    def reset_HP(self):
+        if 'hp' in self.data:
+            self.currentHP = int(self.data['hp'])
+            pass
+        return
+
     def get_all_attacks(self):
         pokemon_data = self.get_data()
         attacks = []

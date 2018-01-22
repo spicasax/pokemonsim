@@ -94,6 +94,26 @@ class OneOnOneBattleSimulator():
         logging.debug('******************** GAME OVER *******************')
         return winner
 
+    def multi_battle(self, num_battles):
+        winners = []
+        for i in range(0, num_battles):
+            winner = self.battle()
+            winners.append(winner)
+            self.card1.reset_HP()
+            self.card2.reset_HP()
+            pass
+        card_ids_1_wins = winners.count(self.card1.__str__())
+        card_ids_2_wins = winners.count(self.card2.__str__())
+
+        if card_ids_1_wins > card_ids_2_wins:
+            print('Winner: {0} [{1}]'.format(self.card1.__str__(), card_ids_1_wins / num_battles))
+        elif card_ids_2_wins > card_ids_1_wins:
+            print('Winner: {0} [{1}]'.format(self.card2.__str__(), card_ids_2_wins / num_battles))
+        else:
+            print('Draw: no winner.')
+
+        return
+
     pass
 
 
@@ -114,20 +134,9 @@ def main():
 
     # run battle simulation a number of times, then see which wins more often, and what percent
     if len(card_ids) == 2:
-        winners = []
         num_battles = 100
-        for i in range (0, num_battles):
-            battle = OneOnOneBattleSimulator(card_ids[0], card_ids[1])
-            winner = battle.battle()
-            winners.append(winner)
-        card_ids_1_wins = winners.count(card_ids[0])
-        card_ids_2_wins = num_battles - card_ids_1_wins
-        if card_ids_1_wins > card_ids_2_wins:
-            print('Winner: {0} [{1}]'.format(card_ids[0], card_ids_1_wins / num_battles))
-        elif card_ids_2_wins > card_ids_1_wins:
-            print('Winner: {0} [{1}]'.format(card_ids[1], card_ids_2_wins / num_battles))
-        else:
-            print('Draw: no winner.')
+        sim = OneOnOneBattleSimulator(card_ids[0], card_ids[1])
+        sim.multi_battle(num_battles)
     else:
         # it is not as interesting to battle same card
         print('Skip: drew same card twice.')
