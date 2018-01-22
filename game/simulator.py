@@ -56,42 +56,34 @@ class OneOnOneBattleSimulator():
         logging.debug('current HP: ')
         logging.debug(currentHP2)
 
-        attacks1 = self.card1.get_all_attacks()
-        attacks2 = self.card2.get_all_attacks()
-
         winner = ''
 
+        attacker = self.card1
+        not_attacker = self.card2
+
         while not done:
-            # first card attacks second card
-            logging.debug('card1 attacks card2:')
-            random_attack = random.randint(0,len(attacks1)-1)
-            if len(attacks1[random_attack]['damage']) > 0:
-                damage = int(normalize_damage(attacks1[random_attack]['damage']))
+            # attacker card attacks not_attacker card
+            logging.debug('{0} attacks {1}'.format(attacker.get_data()['name'], not_attacker.get_data()['name']))
+            random_attack_idx = random.randint(0, len(attacker.get_all_attacks())-1)
+            random_attack = attacker.get_all_attacks()[random_attack_idx]
+
+            if len(random_attack['damage']) > 0:
+                damage = int(normalize_damage(random_attack['damage']))
             else:
                 damage = 0
-            logging.debug('Attack: {0}, Damage: {1}'.format(attacks1[random_attack]['name'], damage))
-            self.card2.decrement_current_HP(damage)
-            logging.debug('now card2 hp is: {0}'.format(self.card2.get_current_HP()))
-            if self.card2.get_current_HP() == 0:
-                done = True
-                logging.debug('card1 wins')
-                winner = self.card1.__str__()
+            logging.debug('Attack: {0}, Damage: {1}'.format(random_attack['name'], damage))
+            not_attacker.decrement_current_HP(damage)
+            logging.debug('now {0} hp is: {1}'.format(not_attacker.get_data()['name'], not_attacker.get_current_HP()))
 
-            # second card attacks first card
-            if not done:
-                logging.debug('card2 attacks card1')
-                random_attack = random.randint(0,len(attacks2)-1)
-                if len(attacks2[random_attack]['damage']) > 0:
-                    damage = int(normalize_damage(attacks2[random_attack]['damage']))
-                else:
-                    damage = 0
-                logging.debug('Attack: {0}, Damage: {1}'.format(attacks2[random_attack]['name'], damage))
-                self.card1.decrement_current_HP(damage)
-                logging.debug('now card1 hp is: {0}'.format(self.card1.get_current_HP()))
-                if self.card1.get_current_HP() == 0:
-                    done = True
-                    logging.debug('card2 wins')
-                    winner = self.card2.__str__()
+            if not_attacker.get_current_HP() == 0:
+                done = True
+                logging.debug('{0} wins'.format(attacker.get_data()['name']))
+                winner = attacker.__str__()
+
+            # swap attacker and not_attacker
+            tmp = attacker
+            attacker = not_attacker
+            not_attacker = tmp
 
             # infinite loop check:
             counter += 1
