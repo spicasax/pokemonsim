@@ -2,7 +2,7 @@ import random
 import logging
 
 from deck import PokemonCard
-from card_helper import normalize_damage
+from card_helper import normalize_damage, pick_two_random_pokemon
 
 logging.basicConfig(filename='../logs/simulator.log',level=logging.DEBUG)
 
@@ -11,6 +11,8 @@ class OneOnOneBattleSimulator():
     """
     A very basic way to play, kids sometimes will just battle Pokemon one on one, without worrying about energies,
     trainers, etc.
+
+    For a given card, each attack id chosen randomly from that card's attacks.
     """
     def __init__(self, card1_id, card2_id):
         """
@@ -118,19 +120,7 @@ class OneOnOneBattleSimulator():
 
 
 def main():
-    from pymongo import MongoClient
-    client = MongoClient()
-    db = client.pokemontcg
-
-    # pick two random Pokemon cards
-    card_ids = []
-    for card in db.cards.aggregate([
-        {'$sample': {'size': 2}},
-        {'$match': {"supertype": "Pokémon"}}
-    ]):
-        print('Id, Name, Set: {0}, {1}, {2}'.format(card['id'], card['name'], card['set']))
-        card_ids.append(card['id'])
-        pass
+    card_ids = pick_two_random_pokemon()
 
     # run battle simulation a number of times, then see which wins more often, and what percent
     if len(card_ids) == 2:
