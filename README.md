@@ -7,12 +7,15 @@ My son loves Pokémon TCG (trading card game) a lot. At first, it was just about
 4. Is there a strongest type?
 5. Can we build a winning-est deck?
 
-# Set up
+## Set up
 1. Please clone or download the zip from https://github.com/PokemonTCG/pokemon-tcg-data to your local git directory. This is an awesome database of Pokémon TCG.
 2. Install MongoDB.
 3. Run ```database/init_cards_mongodb.py``` to load the cards into MongoDB.
 
 # Questions
+
+## What does the data look like?
+See ```analysis/exploratory_data_analysis.ipynb```.
 
 ## Can we classify a Pokémon Subtype?
 
