@@ -13,15 +13,20 @@ def normalize_damage(damage):
     >>> normalize_damage("120−")
     '120'
     """
-    damage = damage.strip()
-    damage = damage.encode('ascii', 'ignore').decode()
-    damage = damage.replace('+', '')
-    damage = damage.replace('-', '')
-    damage = damage.replace('x', '')
-    damage = damage.replace('×', '')
-    damage = damage.replace('n/a', '')
+    if type(damage) == int:
+        # most are string, so we convert to string to propagate similar behaviour
+        return str(damage)
+    elif type(damage) == str:
+        damage = damage.strip()
+        damage = damage.encode('ascii', 'ignore').decode()
+        damage = damage.replace('+', '')
+        damage = damage.replace('-', '')
+        damage = damage.replace('X', '')
+        damage = damage.replace('x', '')
+        damage = damage.replace('×', '')
+        damage = damage.replace('n/a', '')
 
-    return damage
+        return damage
 
 
 def pick_two_random_pokemon():

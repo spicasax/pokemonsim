@@ -1,5 +1,6 @@
 import random
 import logging
+import doctest
 
 from deck import PokemonCard
 from card_helper import normalize_damage, pick_two_random_pokemon
@@ -21,7 +22,7 @@ class OneOnOneBattleSimulator():
         :param card2_id:
 
         >>> b = OneOnOneBattleSimulator('xyp-XY01', 'xyp-XY174')
-        initializing battle with: xyp-XY01, xyp-XY174
+
         """
         # determine which card goes first:
         coin_flip = random.randint(0, 1)
@@ -66,21 +67,26 @@ class OneOnOneBattleSimulator():
         while not done:
             # attacker card attacks not_attacker card
             logging.debug('{0} attacks {1}'.format(attacker.get_data()['name'], not_attacker.get_data()['name']))
-            random_attack_idx = random.randint(0, len(attacker.get_all_attacks())-1)
-            random_attack = attacker.get_all_attacks()[random_attack_idx]
+            if len(attacker.get_all_attacks()) > 0:
+                random_attack_idx = random.randint(0, len(attacker.get_all_attacks())-1)
+                random_attack = attacker.get_all_attacks()[random_attack_idx]
 
-            if len(random_attack['damage']) > 0:
-                damage = int(normalize_damage(random_attack['damage']))
-            else:
                 damage = 0
-            logging.debug('Attack: {0}, Damage: {1}'.format(random_attack['name'], damage))
-            not_attacker.decrement_current_HP(damage)
-            logging.debug('now {0} hp is: {1}'.format(not_attacker.get_data()['name'], not_attacker.get_current_HP()))
+                if 'damage' in random_attack:
+                    normalized_damage = normalize_damage(random_attack['damage'])
+                    if len(normalized_damage) > 0:
+                        damage = int(normalized_damage)
 
-            if not_attacker.get_current_HP() == 0:
-                done = True
-                logging.debug('{0} wins'.format(attacker.get_data()['name']))
-                winner = attacker.__str__()
+                logging.debug('Attack: {0}, Damage: {1}'.format(random_attack['name'], damage))
+                not_attacker.decrement_current_HP(damage)
+                logging.debug('now {0} hp is: {1}'.format(not_attacker.get_data()['name'], not_attacker.get_current_HP()))
+
+                if not_attacker.get_current_HP() == 0:
+                    done = True
+                    logging.debug('{0} wins'.format(attacker.get_data()['name']))
+                    winner = attacker.__str__()
+            else:
+                logging.debug('SKIP ATTACK: {0} has no attacks with damage points.'.format(attacker.__str__()))
 
             # swap attacker and not_attacker
             tmp = attacker
@@ -98,6 +104,7 @@ class OneOnOneBattleSimulator():
 
     def multi_one_on_on_battle(self, num_battles):
         winners = []
+        final_winner = ''
         for i in range(0, num_battles):
             winner = self.battle()
             winners.append(winner)
@@ -109,12 +116,15 @@ class OneOnOneBattleSimulator():
 
         if card_ids_1_wins > card_ids_2_wins:
             print('Winner: {0} [{1}]'.format(self.card1.__str__(), card_ids_1_wins / num_battles))
+            final_winner = self.card1.__str__()
         elif card_ids_2_wins > card_ids_1_wins:
             print('Winner: {0} [{1}]'.format(self.card2.__str__(), card_ids_2_wins / num_battles))
+            final_winner = self.card2.__str__()
         else:
             print('Draw: no winner.')
+            final_winner = 'draw'
 
-        return
+        return final_winner
 
     pass
 
