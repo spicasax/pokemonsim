@@ -11,9 +11,6 @@ class Card():
 
     def __str__(self):
         """
-
-        :return:
-
         >>> c = Card('xyp-XY01')
         >>> c.load_data()
         >>> c.__str__()
@@ -23,8 +20,6 @@ class Card():
 
     def get_data(self):
         """
-
-        :return:
         >>> c = Card('xyp-XY01')
         >>> c.load_data()
         >>> data = c.get_data()
@@ -35,9 +30,6 @@ class Card():
 
     def load_data(self):
         """
-
-        :return:
-
         >>> c = Card('xyp-XY01')
         >>> c.load_data()
         >>> data = c.get_data()
@@ -53,10 +45,6 @@ class Card():
 class PokemonCard(Card):
     def __init__(self, card_id):
         """
-
-
-        :param card_id:
-
         >>> c = PokemonCard('sm35-10')
         >>> c.isEX
         False
@@ -91,9 +79,6 @@ class PokemonCard(Card):
 
     def get_current_HP(self):
         """
-
-        :return:
-
         >>> c = PokemonCard('sm35-10')
         >>> c.get_current_HP()
         180
@@ -102,11 +87,6 @@ class PokemonCard(Card):
 
     def decrement_current_HP(self, amount):
         """
-
-
-        :param amount:
-        :return:
-
         >>> c = PokemonCard('sm35-10')
         >>> c.decrement_current_HP(10)
         170
