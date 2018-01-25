@@ -13,4 +13,4 @@ My son loves Pokémon TCG (trading card game) a lot. At first, it was just about
 3. Run ```database/init_cards_mongodb.py``` to load the cards into MongoDB.
 
 # Analysis	
-Please see: ```docs/analysis.md```.
+Please see: [analysis.md](docs/analysis.md)
