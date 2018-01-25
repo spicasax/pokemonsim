@@ -17,10 +17,6 @@ class OneOnOneBattleSimulator():
     """
     def __init__(self, card1_id, card2_id):
         """
-
-        :param card1_id:
-        :param card2_id:
-
         >>> b = OneOnOneBattleSimulator('xyp-XY01', 'xyp-XY174')
 
         """
