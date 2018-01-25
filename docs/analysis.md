@@ -15,9 +15,9 @@ Note that you can evolve a Pokémon: Basic -> Stage 1 -> Stage 2, where, general
  
 As a warmup exercise to our goal of creating the best deck, here is a question: Given some features of a Pokémon card, can we predict it's subtype?
 
-To transform our data into a tabular format, run: [build_subtype_dataset.py](utilities/build_subtype_dataset.py). This python script will do a simple query for all Pokémon cards, and write to a CSV file in the ../data_extract directory.
+To transform our data into a tabular format, run: [build_subtype_dataset.py](../utilities/build_subtype_dataset.py). This python script will do a simple query for all Pokémon cards, and write to a CSV file in the ../data_extract directory.
 
-To answer our question, I built several classifiers using sci-kit learn, and then also an ensemble voting classifier, in file: [predict_subtype.py](analysis/predict_subtype.py).
+To answer our question, I built several classifiers using sci-kit learn, and then also an ensemble voting classifier, in file: [predict_subtype.py](../analysis/predict_subtype.py).
 
 Results were decent, but not super, the Voting Ensemble of SVM, Random Forest and MLP, performing the best:
 
