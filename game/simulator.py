@@ -111,13 +111,13 @@ class OneOnOneBattleSimulator():
         card_ids_2_wins = winners.count(self.card2.__str__())
 
         if card_ids_1_wins > card_ids_2_wins:
-            print('Winner: {0} [{1}]'.format(self.card1.__str__(), card_ids_1_wins / num_battles))
+            #print('Winner: {0} [{1}]'.format(self.card1.__str__(), card_ids_1_wins / num_battles))
             final_winner = self.card1.__str__()
         elif card_ids_2_wins > card_ids_1_wins:
-            print('Winner: {0} [{1}]'.format(self.card2.__str__(), card_ids_2_wins / num_battles))
+            #print('Winner: {0} [{1}]'.format(self.card2.__str__(), card_ids_2_wins / num_battles))
             final_winner = self.card2.__str__()
         else:
-            print('Draw: no winner.')
+            #print('Draw: no winner.')
             final_winner = 'draw'
 
         return final_winner
@@ -143,7 +143,8 @@ def main():
     if len(card_ids) == 2:
         num_battles = cmd_args.num_battles
         sim = OneOnOneBattleSimulator(card_ids[0], card_ids[1])
-        sim.multi_one_on_on_battle(num_battles)
+        winner = sim.multi_one_on_on_battle(num_battles)
+        print("Winner: {0}".format(winner))
     else:
         # it is not as interesting to battle same card
         print('Skip: both cards are the same.')
