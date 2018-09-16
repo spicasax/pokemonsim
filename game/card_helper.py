@@ -26,7 +26,10 @@ def normalize_damage(damage):
         damage = damage.replace('×', '')
         damage = damage.replace('n/a', '')
 
-        return damage
+    if len(damage) == 0:
+        damage = '0'
+
+    return damage
 
 
 def pick_two_random_pokemon():
