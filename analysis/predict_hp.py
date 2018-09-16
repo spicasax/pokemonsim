@@ -31,25 +31,25 @@ print("Use Pearson Correlation to detect possible relationships:")
 print(correlation)
 
 """
-                                      HP  RetreatCostCount  AttackCount  AttackConvertedEnergyCostTotal  WeaknessTotal  ResistanceTotal   Ability
-HP                              1.000000          0.489399     0.014008                        0.635734       0.912247              NaN  0.374742
-RetreatCostCount                0.489399          1.000000    -0.012634                        0.444247       0.375604              NaN  0.126161
-AttackCount                     0.014008         -0.012634     1.000000                        0.520531      -0.031761              NaN -0.537108
-AttackConvertedEnergyCostTotal  0.635734          0.444247     0.520531                        1.000000       0.564241              NaN -0.048969
-WeaknessTotal                   0.912247          0.375604    -0.031761                        0.564241       1.000000              NaN  0.381741
-ResistanceTotal                      NaN               NaN          NaN                             NaN            NaN              NaN       NaN
-Ability                         0.374742          0.126161    -0.537108                       -0.048969       0.381741              NaN  1.000000
-
+                                      HP  RetreatCostCount  AttackCount  AttackConvertedEnergyCostTotal  WeaknessTotal  ResistanceTotal   Ability  StrongestDamage
+HP                              1.000000          0.492049    -0.008730                        0.622477       0.912584              NaN  0.386493         0.712292
+RetreatCostCount                0.492049          1.000000    -0.028344                        0.433707       0.376392              NaN  0.139320         0.367096
+AttackCount                    -0.008730         -0.028344     1.000000                        0.445368      -0.054133              NaN -0.550093         0.076314
+AttackConvertedEnergyCostTotal  0.622477          0.433707     0.445368                        1.000000       0.554961              NaN -0.024480         0.653237
+WeaknessTotal                   0.912584          0.376392    -0.054133                        0.554961       1.000000              NaN  0.391766         0.660419
+ResistanceTotal                      NaN               NaN          NaN                             NaN            NaN              NaN       NaN              NaN
+Ability                         0.386493          0.139320    -0.550093                       -0.024480       0.391766              NaN  1.000000         0.256545
+StrongestDamage                 0.712292          0.367096     0.076314                        0.653237       0.660419              NaN  0.256545         1.000000
 """
 
 
 # Create our numpy arrays for our model based on most correlated features
-X = cards[['AttackConvertedEnergyCostTotal', 'WeaknessTotal', 'RetreatCostCount']].values
+X = cards[['WeaknessTotal', 'StrongestDamage', 'AttackConvertedEnergyCostTotal', 'RetreatCostCount']].values
 y = cards.HP.values
 
 # I've experimented and tweaked any parameters given here
 clf1 = linear_model.LinearRegression()
-clf2 = ensemble.GradientBoostingRegressor(n_estimators=500, max_depth=3, min_samples_split=2,
+clf2 = ensemble.GradientBoostingRegressor(n_estimators=500, max_depth=2, min_samples_split=2,
           learning_rate=0.01, loss='huber')
 clf3 = svm.SVR(kernel='linear', C=5)
 
@@ -59,12 +59,12 @@ for clf, label in zip(
         ['Linear Regression', 'Gradient Boosting Regressor', 'Support Vector Regression']
 ):
     prediction = cross_val_predict(clf, X, y, cv=3)
-    print("R squared: %0.2f, MSE: %0.2f, [%s]" % (r2_score(y, prediction), mean_squared_error(y, prediction), label))
+    print("R squared: %0.3f, MSE: %0.2f, [%s]" % (r2_score(y, prediction), mean_squared_error(y, prediction), label))
 
 """
-R squared: 0.86, MSE: 86.22, [Linear Regression]
-R squared: 0.86, MSE: 88.15, [Gradient Boosting Regressor]
-R squared: 0.86, MSE: 87.59, [Support Vector Regression]
+R squared: 0.867, MSE: 82.72, [Linear Regression]
+R squared: 0.866, MSE: 83.52, [Gradient Boosting Regressor]
+R squared: 0.865, MSE: 83.94, [Support Vector Regression]
 """
 
 # Supposing we want to use the Linear Regression model (since it performed slightly better than the other two models),
@@ -73,7 +73,8 @@ clf1.fit(X, y)
 AttackConvertedEnergyCostTotal = 7
 WeaknessTotal = 2
 RetreatCostCount = 3
-pred = clf1.predict([[AttackConvertedEnergyCostTotal, WeaknessTotal, RetreatCostCount],])
-print("HP prediction for [AttackConvertedEnergyCostTotal, WeaknessTotal, RetreatCostCount] = [{0}, {1}, {2}] is: {3}".format(
-    AttackConvertedEnergyCostTotal, WeaknessTotal, RetreatCostCount, round(pred[0],-1))
+StrongestDamage = 80
+pred = clf1.predict([[WeaknessTotal, StrongestDamage, AttackConvertedEnergyCostTotal,  RetreatCostCount],])
+print("HP prediction for [WeaknessTotal, StrongestDamage, AttackConvertedEnergyCostTotal,  RetreatCostCount = [{0}, {1}, {2}, {3}] is: {4}".format(
+    WeaknessTotal, StrongestDamage, AttackConvertedEnergyCostTotal, RetreatCostCount, round(pred[0],-1))
 )

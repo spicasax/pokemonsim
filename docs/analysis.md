@@ -36,21 +36,15 @@ Note that I chose accuracy as my metric for comparison. Since I don't really hav
 
 ## Can we predict HP?
 
-TODO: fix link below
-
-Another thing we can attempt with this data set is to predict HP given values for Weakness total, Retreat Cost, Total of all Attack Energy Costs. Even though HP are in increments of 10, we will consider them as continuous, when building a regression model in [predict_hp.py](../analysis/predict_hp.py).
-
-TODO: how did you pick which algorithm to try?
+Another thing we can attempt with this data set is to predict HP given values for WeaknessTotal, StrongestDamage, AttackConvertedEnergyCostTotal,  RetreatCostCount. Even though HP are in increments of 10, we will consider them as continuous, when building a regression model in [predict_hp.py](../analysis/predict_hp.py). We only need to round the results of any predictions from the fitted model.
 
 Using R squared and MSE, we can evaluate a few different models:
 
 ```
-R squared: 0.86, MSE: 86.22, [Linear Regression]
-R squared: 0.86, MSE: 88.13, [Gradient Boosting Regressor]
-R squared: 0.86, MSE: 87.59, [Support Vector Regression]
+R squared: 0.867, MSE: 82.72, [Linear Regression]
+R squared: 0.866, MSE: 83.52, [Gradient Boosting Regressor]
+R squared: 0.865, MSE: 83.94, [Support Vector Regression]
 ```
 
-TODO: how to interpret the results? what metrics do you use to compare?
-
-These are very close, with Linear Regression giving the best model.
+With R squared, the closer to 1 is generally the better solution. These results are very close, with Linear Regression giving the best model. We can also look at MSE (Mean Squared Error), as a loss function we would want to minimize. In reality, all of these models are very close. Since this is mostly an educational exercise, any of these are probably fine.
 
