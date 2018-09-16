@@ -1,12 +1,19 @@
+# coding=utf-8
 from pymongo import MongoClient
 
 import doctest
 
 
-class Card():
+class Card:
     def __init__(self, card_id):
+        """
+        >>> c = Card('xyp-XY01')
+        >>> c.card_id
+        'xyp-XY01'
+        """
         self.data = {}
         self.card_id = card_id
+        self.isDiscarded = False
         return
 
     def __str__(self):
@@ -99,15 +106,69 @@ class PokemonCard(Card):
         return self.currentHP
 
     def reset_HP(self):
+        """
+        >>> c = PokemonCard('sm35-10')
+        >>> c.decrement_current_HP(10)
+        170
+        >>> c.reset_HP()
+        >>> c.get_current_HP()
+        180
+        """
         if 'hp' in self.data:
             self.currentHP = int(self.data['hp'])
             pass
         return
 
     def get_all_attacks(self):
+        """
+        >>> c = PokemonCard('sm35-10')
+        >>> attacks = c.get_all_attacks()
+        >>> len(attacks)
+        3
+        """
         pokemon_data = self.get_data()
         attacks = []
         if 'attacks' in pokemon_data:
             attacks = pokemon_data['attacks']
         return attacks
 
+
+class EnergyCard(Card):
+    def __init__(self, card_id):
+        """
+        >>> c = EnergyCard('base1-101')
+        >>> c.card_id
+        'base1-101'
+        >>> c.energy_type
+        'Psychic Energy'
+        """
+        Card.__init__(self, card_id)
+
+        self.load_data()
+        data = self.get_data()
+
+        self.energy_type = data['name']
+
+        return
+
+
+class TrainerCard(Card):
+    def __init__(self, card_id):
+        """
+        >>> c = TrainerCard('base1-93')
+        >>> c.card_id
+        'base1-93'
+        >>> c.name
+        'Gust of Wind'
+        >>> c.text[0]
+        "Choose 1 of your opponent's Benched Pokémon and switch it with his or her Active Pokémon."
+        """
+        Card.__init__(self, card_id)
+
+        self.load_data()
+        data = self.get_data()
+
+        self.name = data['name']
+        self.text = data['text']
+
+        return
