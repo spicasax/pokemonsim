@@ -28,15 +28,18 @@ X = cards[['HP', 'RetreatCostCount', 'AttackCount', 'AttackConvertedEnergyCostTo
            'WeaknessTotal', 'ResistanceTotal', 'Ability']].values
 y = cards.Subtype.values
 
+print('Subtype distribution:')
+print(cards.Subtype.value_counts())
+
 print('X shape:')
 print(X.shape)
 
 print('Y shape:')
 print(y.shape)
 
-clf1 = svm.SVC(C=1)
-clf2 = RandomForestClassifier(n_estimators=10, max_depth=None, min_samples_split=2, random_state=0)
-clf3 = MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(5, 2), random_state=1)
+clf1 = svm.SVC(C=1.0, cache_size=500, kernel='linear')
+clf2 = RandomForestClassifier(n_estimators=500, max_depth=None, min_samples_split=2, random_state=0, max_features=2)
+clf3 = MLPClassifier(solver='lbfgs', alpha=1e-6, hidden_layer_sizes=(5, 2), random_state=1)
 voting = VotingClassifier(estimators=[('svc', clf1), ('rf', clf2), ('mlp', clf3), ], voting='hard')
 for clf, label in zip(
         [clf1, clf2, clf3, voting],
@@ -46,8 +49,18 @@ for clf, label in zip(
     print("Accuracy: %0.2f (+/- %0.2f) [%s]" % (scores.mean(), scores.std(), label))
 
 '''
-Accuracy: 0.87 (+/- 0.05) [Support Vector Machine]
-Accuracy: 0.88 (+/- 0.04) [Random Forest]
-Accuracy: 0.84 (+/- 0.07) [Multi-Layer Perceptron]
-Accuracy: 0.89 (+/- 0.05) [Voting Ensemble]
+Subtype distribution:
+Basic       222
+Stage 1     166
+Stage 2      59
+Level Up      2
+Name: Subtype, dtype: int64
+X shape:
+(449, 7)
+Y shape:
+(449,)
+Accuracy: 0.90 (+/- 0.03) [Support Vector Machine]
+Accuracy: 0.89 (+/- 0.04) [Random Forest]
+Accuracy: 0.86 (+/- 0.04) [Multi-Layer Perceptron]
+Accuracy: 0.90 (+/- 0.04) [Voting Ensemble]
 '''
